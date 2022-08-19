@@ -7,7 +7,7 @@ then
     exit 1
 fi
 
-if [[ "$file" == *.cpp ]]
+if ! [[ "$1" == *".cpp" ]]
 then
     echo dbgcpp: error: file should have '.cpp' extension
     exit 2
@@ -15,11 +15,9 @@ fi
 
 base=$(basename -s .cpp $1)
 
-echo run: $1
-
 g++ -Wall -lm -o ./$base $1
 
-if ! [ "$?" = "0" ]
+if ! [ "$?" -eq "0" ]
 then
     exit "$?"
 fi
@@ -28,6 +26,7 @@ mkdir -p ~/.tmp/runcpp/
 mv ./$base ~/.tmp/runcpp/$base
 chmod +x ~/.tmp/runcpp/$base
 
+echo run: $1
 ~/.tmp/runcpp/$base "${@:2}"
 retval=$?
 

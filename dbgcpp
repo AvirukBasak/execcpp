@@ -2,7 +2,8 @@
 
 if [ "$1" = "" ]
 then
-    echo dbgc: error: no arguments provided
+    echo dbgcpp: error: no arguments provided
+    echo usage: dbgcpp file.cpp [argv]
     exit 1
 fi
 
@@ -10,12 +11,17 @@ base=$(basename -s .c $1)
 
 echo debug: $1
 
-g++ -Wall -g -ggdb -D DEBUG="(1)" -o ./$base $1
+g++ -Wall -lm -g -ggdb -D DEBUG="(1)" -o ./$base $1
 
 if ! [ "$?" = "0" ]
 then
     exit "$?"
 fi
 
-gdb -q ./$base
-rm ./$base
+mkdir -p ~/.tmp/dbgcpp/
+mv ./$base ~/.tmp/dbgcpp/$base
+chmod +x ~/.tmp/dbgcpp/$base
+
+gdb ~/.tmp/dbgcpp/$base
+
+rm ~/.tmp/dbgcpp/$base

@@ -7,7 +7,13 @@ then
     exit 1
 fi
 
-base=$(basename -s .c $1)
+if [[ "$file" == *.cpp ]]
+then
+    echo dbgcpp: error: file should have '.cpp' extension
+    exit 2
+fi
+
+base=$(basename -s .cpp $1)
 
 echo run: $1
 

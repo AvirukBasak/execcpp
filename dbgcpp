@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ "$1" = "" ]
+then
+    echo dbgc: error: no arguments provided
+    exit 1
+fi
+
+base=$(basename -s .c $1)
+
+echo debug: $1
+
+g++ -Wall -g -ggdb -D DEBUG="(1)" -o ./$base $1
+
+if ! [ "$?" = "0" ]
+then
+    exit "$?"
+fi
+
+gdb -q ./$base
+rm ./$base

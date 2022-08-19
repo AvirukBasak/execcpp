@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$1" = "" ]
+then
+    echo runc: error: no arguments provided
+    exit 1
+fi
+
+base=$(basename -s .c $1)
+
+echo run: $1
+
+g++ -Wall -o ./$base $1
+
+if ! [ "$?" = "0" ]
+then
+    exit "$?"
+fi
+
+./$base "${@:2}"
+retval=$?
+rm ./$base
+exit $retval
